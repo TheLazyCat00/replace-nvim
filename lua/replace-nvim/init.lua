@@ -3,8 +3,7 @@ local blocked = true
 
 --- Runs after entering insert mode.
 --- @param callback fun(): nil
---- @param delay number Delay in milliseconds
-local function afterOPending(callback, delay)
+local function afterOPending(callback)
 	local keyListener
 	keyListener = vim.on_key(function(key)
 		vim.schedule(function ()
@@ -25,9 +24,8 @@ local function afterOPending(callback, delay)
 end
 
 --- Replaces put to register operation while preserving registers.
---- @param delay number Delay in milliseconds
 --- @return string Command mode for replacement.
-local function replaceWriteToReg(delay)
+local function replaceWriteToReg()
 	local originalValue = vim.fn.getreg('+', true)
 
 	afterOPending(function ()
@@ -37,35 +35,33 @@ local function replaceWriteToReg(delay)
 		vim.cmd("stopinsert")
 		vim.cmd("normal! P")
 		vim.fn.setreg("+", newValue)
-	end, delay)
+	end)
 
 	return 'c'
 end
 
 --- Performs a replace operation.
---- @param delay number Delay in milliseconds
 --- @return string Command mode for replacement.
-local function replace(delay)
+local function replace()
 	afterOPending(function ()
 		vim.cmd("stopinsert")
 		vim.cmd("normal! P")
-	end, delay)
+	end)
 
 	return '"_c'
 end
 
 --- Replaces text based on writeToReg flag.
---- @param delay number Delay in milliseconds
 --- @param writeToReg? boolean Optional flag to write to register.
 --- @return string Command mode for replacement.
-function M.replace(delay, writeToReg)
+function M.replace(writeToReg)
 	writeToReg = writeToReg or false
 	blocked = false
 
 	if writeToReg then
-		return replaceWriteToReg(delay)
+		return replaceWriteToReg()
 	else
-		return replace(delay)
+		return replace()
 	end
 end
 

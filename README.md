@@ -20,7 +20,7 @@ return {
     keys = {
         {
             "t",
-            function() return require('replace-nvim').replace(5, true) end,
+            function() return require('replace-nvim').replace(true) end,
             mode = { "n", "x" },
             expr = true, -- ⚠️ set expr to true
             desc = "Replace with clipboard",
@@ -34,9 +34,8 @@ return {
 
 ## 🚧 Parameters
 
-`replace()` has 2 parameters:
+`replace()` has only parameter:
 
-- `delay`: The duration in milliseconds to check if the user is in insert mode (this is part of how the plugin operates). Lower values result in faster execution (more responsive), while higher values are less resource intensive.
 - `writeToReg`: Determines whether the removed text should be placed in the + register.
 
 ---
