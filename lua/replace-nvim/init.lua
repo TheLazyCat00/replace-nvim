@@ -1,18 +1,27 @@
 local M = {}
+local blocked = true
 
---- Runs a callback after entering insert mode.
+--- Runs after entering insert mode.
 --- @param callback fun(): nil
 --- @param delay number Delay in milliseconds
 local function afterOPending(callback, delay)
-	local function checkMode()
-		if vim.fn.mode(1) == 'i' then
-			vim.schedule(callback)
-		else
-			vim.defer_fn(checkMode, delay)
-		end
-	end
+	local keyListener
+	keyListener = vim.on_key(function(key)
+		vim.schedule(function ()
+			if not blocked then
+				if vim.api.nvim_get_mode().mode == "n" then
+					vim.on_key(nil, keyListener)
+					return
+				end
 
-	checkMode()
+				if vim.api.nvim_get_mode().mode == 'i' then
+					blocked = true
+					vim.on_key(nil, keyListener)
+					vim.schedule(callback)
+				end
+			end
+		end)
+	end)
 end
 
 --- Replaces put to register operation while preserving registers.
@@ -51,6 +60,7 @@ end
 --- @return string Command mode for replacement.
 function M.replace(delay, writeToReg)
 	writeToReg = writeToReg or false
+	blocked = false
 
 	if writeToReg then
 		return replaceWriteToReg(delay)
