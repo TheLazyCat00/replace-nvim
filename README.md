@@ -1,5 +1,5 @@
 Don't use this plugin!
-I stopped developing it because I found (https://github.com/gbprod/substitute.nvim)[substitute.nvim] which is way better.
+I stopped developing it because I found [https://github.com/gbprod/substitute.nvim](substitute.nvim) which is way better.
 
 # replace-nvim 📝
 
