@@ -1,3 +1,6 @@
+Don't use this plugin!
+I stopped developing it because I found (https://github.com/gbprod/substitute.nvim)[substitute.nvim] which is way better.
+
 # replace-nvim 📝
 
 replace-nvim is a Neovim plugin that lets you replace parts of your code with the content from your clipboard using text objects. This means that if you bind `t` to it, you can do `tab` (`t` around block) and the content from the + register will be inserted into that section.
